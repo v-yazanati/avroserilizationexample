@@ -1,5 +1,8 @@
 io\cloudevents\AvroCloudEventData$Builder.class
+io\cloudevents\AvroCloudEventData.class
+com\mycompany\mavenproject1\CloudEventSerde.class
+com\mycompany\mavenproject1\CloudEventSerde$CloudEventDeserializer.class
 com\mycompany\mavenproject1\Mavenproject1.class
 io\cloudevents\CloudEvent.class
-io\cloudevents\AvroCloudEventData.class
 io\cloudevents\CloudEvent$Builder.class
+com\mycompany\mavenproject1\CloudEventSerde$CloudEventSerializer.class

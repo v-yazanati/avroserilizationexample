@@ -6,7 +6,7 @@
 package io.cloudevents;
 
 import org.apache.avro.generic.GenericArray;
-import org.apache.avro.specific.SpecificData;
+import org.apache.avro.specific.*;
 import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.BinaryMessageDecoder;
@@ -14,7 +14,7 @@ import org.apache.avro.message.SchemaStore;
 
 /** Representation of a JSON Value */
 @org.apache.avro.specific.AvroGenerated
-public class AvroCloudEventData extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
+public class AvroCloudEventData extends SpecificRecordBase implements SpecificRecord {
   private static final long serialVersionUID = 6655532353752151588L;
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"AvroCloudEventData\",\"namespace\":\"io.cloudevents\",\"doc\":\"Representation of a JSON Value\",\"fields\":[{\"name\":\"value\",\"type\":{\"type\":\"map\",\"values\":[\"null\",\"boolean\",{\"type\":\"map\",\"values\":\"AvroCloudEventData\"},{\"type\":\"array\",\"items\":\"AvroCloudEventData\"},\"double\",\"string\"]}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }

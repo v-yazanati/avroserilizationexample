@@ -4,6 +4,9 @@
 
 package com.mycompany.mavenproject1;
 
+
+import com.azure.core.util.serializer.*;
+import io.cloudevents.*;
 import com.azure.core.models.*;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.*;
@@ -12,8 +15,9 @@ import com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializ
 import com.azure.data.schemaregistry.avro.*;
 import com.azure.identity.*;
 import com.azure.messaging.eventhubs.*;
-import java.time.LocalDate;
+import java.net.URI;
 import java.io.*;
+
 
 
 
@@ -26,12 +30,24 @@ public class Mavenproject1 {
     public static void main(String[] args) {
         
 
-        String conStr = "<connectionString>";
-        String eveHubName = "<eventhubName>";
-        String eventHubEndPoint = "<eventhubEndpoint>";
-        String schemaGroup = "<schemagroup>";
+        String conStr = "Endpoint=sb://yazan-eh.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=CoAVkqVnwsFw4vhAPm8tp/HgfXhOZz+xG+AEhIWprts=";
+        String eveHubName = "yazaninstance";
+        String eventHubEndPoint = "yazan-eh.servicebus.windows.net";
+        String schemaGroup = "yazangroup";
+        AzureCliCredential azureCredential = new AzureCliCredentialBuilder().build();
         
-        EventHubProducerClient producer = new EventHubClientBuilder()
+                    var schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
+                    .fullyQualifiedNamespace(eventHubEndPoint)
+                    .credential(azureCredential)
+                    .buildAsyncClient();
+
+            var AVRO_SERIALIZER = new SchemaRegistryApacheAvroSerializerBuilder()
+                    .schemaRegistryClient(schemaRegistryAsyncClient)
+                    .schemaGroup(schemaGroup)
+                    .avroSpecificReader(true)
+                    .autoRegisterSchemas(true)
+                    .buildSerializer();
+                EventHubProducerClient producer = new EventHubClientBuilder()
             .connectionString(conStr, eveHubName)
             .buildProducerClient();
         
@@ -46,34 +62,16 @@ public class Mavenproject1 {
                 .setData("{}")
                 .build();
 
-        //EventData ev1 = new EventData();
-        //ev1.setContentType("avro/binary+1");
+        
 
-AzureCliCredential azureCredential = new AzureCliCredentialBuilder().build();
-
-
-
-var schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
-    
-    .fullyQualifiedNamespace(eventHubEndPoint)
-        .credential(azureCredential)
-        .buildAsyncClient();
-
-
-      SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
-     .schemaRegistryClient(schemaRegistryAsyncClient)
-     .schemaGroup(schemaGroup)
-     .autoRegisterSchemas(true)
-     .avroSpecificReader(true)
-     .buildSerializer();
-
-
-     EventData eventData = serializer.serialize(data, TypeReference.createInstance(EventData.class));
+     EventData encodedMessage  = AVRO_SERIALIZER.serialize(data, TypeReference.createInstance(EventData.class));
+     
         
         var batch = producer.createBatch();
-        batch.tryAdd(eventData);
+        batch.tryAdd(encodedMessage);
         producer.send(batch);
         System.out.println("Message sent!!!!!!!!");
+        
         
   
     }
