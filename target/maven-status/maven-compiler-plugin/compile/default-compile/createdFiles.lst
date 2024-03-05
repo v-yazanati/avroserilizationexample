@@ -1,0 +1,5 @@
+io\cloudevents\AvroCloudEventData$Builder.class
+com\mycompany\mavenproject1\Mavenproject1.class
+io\cloudevents\CloudEvent.class
+io\cloudevents\AvroCloudEventData.class
+io\cloudevents\CloudEvent$Builder.class
