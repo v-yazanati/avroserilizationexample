@@ -30,7 +30,7 @@ public class Mavenproject1 {
     public static void main(String[] args) {
         
 
-        String conStr = "Endpoint=sb://yazan-eh.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=CoAVkqVnwsFw4vhAPm8tp/HgfXhOZz+xG+AEhIWprts=";
+        String conStr = "Endpoint=sb://yazan-eh.servicebus.windows.net/;SharedAccessKeyName=yazanPolicy;SharedAccessKey=Kt8A/pDhUqHxwl0Grd7G+jlLVtHhWEYIM+AEhNRgSRM=;EntityPath=yazaninstance";
         String eveHubName = "yazaninstance";
         String eventHubEndPoint = "yazan-eh.servicebus.windows.net";
         String schemaGroup = "yazangroup";
@@ -41,12 +41,13 @@ public class Mavenproject1 {
                     .credential(azureCredential)
                     .buildAsyncClient();
 
-            var AVRO_SERIALIZER = new SchemaRegistryApacheAvroSerializerBuilder()
+            SchemaRegistryApacheAvroSerializer AVRO_SERIALIZER = new SchemaRegistryApacheAvroSerializerBuilder()
                     .schemaRegistryClient(schemaRegistryAsyncClient)
                     .schemaGroup(schemaGroup)
                     .avroSpecificReader(true)
                     .autoRegisterSchemas(true)
                     .buildSerializer();
+            
                 EventHubProducerClient producer = new EventHubClientBuilder()
             .connectionString(conStr, eveHubName)
             .buildProducerClient();
